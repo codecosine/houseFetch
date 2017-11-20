@@ -1,45 +1,22 @@
-const cheerio = require('cheerio');
-const request = require('superagent');
+const axios = require('axios');
+const config = require('../config')
+const fetcher = require('../fetcher/houseFetcher')
 /**
- * 有同时打开限制,采用随机Sleep
- * houseDetail
- * 
- * title
- * address
+ * 单次请求限制,采用随机Sleep
  * 
  */
-// function getTitleA($){
-//     return $('.pho_info')
-// }
 function solve(url){
     return new Promise(function(resolve,reject){
-        function callback(){
-            request.get(url)
-             .end(function(err,sres){
-                    if(err){
-                        reject(err);
-                    }
-                    var details = [];
-                    var $ = cheerio.load(sres.text);
-                    // $('#introduce li').each((i,ele)=>{
-                    //     var $element = $(ele)
-                        
-                    //     details.push({
-                    //         '房屋信息字段': $element.find('h6').text(),
-                    //     })
-                    // })
-                    $('.info_r p').each(function(i,elem){
-                        var $element = $(elem)
-                        details.push({
-                            '个性描述': $element.text()
-                        })
-                    })
-                    resolve(details)                
-            })
-        }
-        var sleep = Math.random()*8000
+        var sleep = Math.random()* config.SLEEP_TIME_OUT
         console.log('sleep:'+sleep)
-        setTimeout(callback,sleep)  
+        setTimeout(function callback(){
+            axios.get(url)
+             .then(res=> {
+                resolve(fetcher((res.data)))                
+            }).catch(err=>{
+                reject(err)
+            })
+        },sleep)  
     })
 }
 function unitTest(url){
