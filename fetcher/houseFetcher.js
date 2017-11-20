@@ -1,11 +1,16 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
-function fetch(data){
+function fetch(data,url){
+    let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let house = {
+        id: id.replace(/[^0-9]/g,""),
         info: getInfo($),
         price: getPrice($),
-        introduce: getIntro($)
+        introduce: getIntro($),
+        des: getDes($),
+        score: getScore($),
+        selfcomment: getSelfcomment($),
     }
     return house;
 }
@@ -36,12 +41,32 @@ function getIntro($){
     return res
 }
 function getDes($){
-    
-    $('.info_r p').each(function(i,elem){
+    let des = $('.detail_intro_item')
+    let res = ''
+    des.each(function(i,elem){
         let $element = $(elem)
-        list.push({
-            '个性描述': $element.text()
-        })
+        res += utils.allTrim($element.find('.info_l p').text()+':')
+        res += utils.allTrim($element.find('.info_r p').text()+',')
     })
+    return res
+}
+function getScore($){
+    return $('.comment_box .x_textscore').text()
+    
+}
+function getSelfcomment($){
+    let comments = $('#selfcomment')
+    let res = [];
+    comments.find('.dp_box').each((i,ele)=>{
+        let $element = $(ele)
+        var evaluation = {
+            'tenant':utils.allTrim($element.find('a').text()),
+            'content':utils.allTrim($element.find('.dp_con').text()),// 没有去掉h6
+            'username':utils.allTrim($element.find('.dp_con h6 a').text()),            
+            'time':$element.find('.dp_con h6 i').text()
+        }
+        res.push(evaluation)
+    })
+    return res
 }
 module.exports = fetch

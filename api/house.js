@@ -12,10 +12,10 @@ function solve(url){
         setTimeout(function callback(){
             axios.get(url)
              .then(res=> {
-                resolve(fetcher((res.data)))                
-            }).catch(err=>{
+                resolve(fetcher(res.data,url))                
+             }).catch(err=>{
                 reject(err)
-            })
+             })
         },sleep)  
     })
 }
