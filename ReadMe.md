@@ -1,7 +1,16 @@
 ## 简介
 一个爬虫
 nodejs+axios+cheerio+mysql
-### 数据结构初版
+
+### 爬虫循环队列
+
+入口(房子)=>>房东
+1.进行 house 表的重复判断,并收集更新,无论如何进行houseHy 表的更新=>将收集房东信息的行动放进队列
+2.进行 reivew 表的收集更新=>将所有收集房客的行动放进队列 => 收集并更新tenant表 => 将点评中不重复的房子放进队列
+5.对landlord表进行收集更新(判断是否存在房东详情页),无论如何进行landlordHistory表的更新=>将房源信息的房子的收集行动放进队列
+
+
+### 数据结构
 
 ``` javascript
 /**
@@ -9,10 +18,10 @@ nodejs+axios+cheerio+mysql
  */
 var house = {
     houseId: '房屋Id',// 由地址栏最后的数字,*主键
+    landlordId: '',
+
     title: '标题',
     address: '房屋地点',
-    price: '价格', // 时间维度怎么做
-    score: '评分',
     info1: '面积户型',
     info2: '宜居人数',
     info3: '家具情况',
@@ -22,28 +31,54 @@ var house = {
     info7: '周边情况',
     info8: '配套设施',
     info9: '入住须知',
-    //
-    landlord: '',//房东 id? 外键1
+}
+var houseHistory = {
+    id: '标志',
+    houseId: '房屋Id',
+    price: '价格',
+    score: '评分',
+    fetchTime: '抓取时间',
+}
+/**
+ * review
+ * 评价信息
+ */
+var review = {
+    id: '',
+    houseId: '评价的房子的id',
+    tenantId: '评价房客id',
+    content: '评价内容',
+    checkInTime: '入住时间',
+    reply: '房东回复',
 }
 /**
  * landlord
  */
 var landlord = {
-    landlordId: '',// *
+    landlordId: '',
     username: '昵称',
-    avatar: '头像图片地址',// 图片全部是懒加载，暂时未定是抓地址还是抓图
-    authName: '实名认证',// true/false
-    authPhone: '手机认证',// true/false
-    authAvatar: '头像真人认证',// true/false
-    authZima: '600',//芝麻信用分
-    sex: '',
-    age: '',
+    avatar: '头像图片地址',
+    authName: '实名认证',
+    authPhone: '手机认证',
+    authAvatar: '头像真人认证',
+    authZima: '600 芝麻分',
+    sex: '性别',
+    age: '年龄',
     constellation:'星座',
     zodiac: '生肖',
     home:'故乡',
     bloodType:'血型',
     job: '职业',
     education: '学历',
+    
+}
+var landlordHistory = {
+    id: '',
+    landlordId: '',
+    houseAmount: '房源数',
+    reviewAmount: '评论数',
+    orderAmount: '预定数',
+    fetchTime: '抓取时间',
     onlineReply:'在线回复率',
     perConfirm:'平均确认率',
     orderSuccess:'订单接受率',
@@ -51,55 +86,17 @@ var landlord = {
 
 /**
  * tenant 租客
+ * 只有租客个人基本信息，通过租客来寻找更多房东
  */
 var tenant = {
     id: '',
     username: '昵称',
     registerTime: '注册时间',
     avatar: '头像图片地址',
-    authName: '实名认证',// true/false
-    authPhone: '手机认证',// true/false
-    authAvatar: '头像真人认证',// true/false,
-    // 下面的情况会出多表
-    evaluations: [{
-
-    }],// 租客历史评价信息
+    authName: '实名认证',
+    authPhone: '手机认证',
+    authAvatar: '头像真人认证',
+    //有可能有遗漏的静态字段
 }
 
-/**
- * evaluation
- * 评价信息
- */
-var evaluation = {
-    id: '',
-    houseId: '',
-    tenantId: '评价者',
-    content: '评价内容',
-    time: '入住时间',
-    reply: '房东回复',
-}
-// 房源信息 这个会和house冲突？
-var houseInfo = {
-    houseId: '通过链入的url尾部id',
-    evaluationNum: '评价数',
-    bookNum: '预定数',
-    subTime: '发布时间'
-},// 拥有的房源
-//evaluation 冲突？
-var houseEvaluations = {
-    id: '',
-    houseId: '',
-    tenantId: '评价者',
-    content: '评价内容',
-    time: '入住时间',
-    reply: '房东回复',   
-},
-var houseDiary = {
-    title: '标题',
-    des: '简略内容',
-    subTime: '发布时间',
-    read: '',
-    comment: '',
-    love: '',
-],// 日记
-```
+
