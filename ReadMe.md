@@ -36,7 +36,12 @@ var houseHistory = {
     id: '标志',
     houseId: '房屋Id',
     price: '价格',
-    score: '评分',
+    scoreAll: '评分',
+    score1: '整洁卫生',
+    score2: '描述相符',
+    score3: '交通位置',
+    score4: '安全程度',
+    score5: '性价比',
     fetchTime: '抓取时间',
 }
 /**
