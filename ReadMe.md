@@ -82,15 +82,16 @@ var landlordHistory = {
     houseAmount: '房源数',
     reviewAmount: '评论数',
     orderAmount: '预定数',
-    fetchTime: '抓取时间',
     onlineReply:'在线回复率',
     perConfirm:'平均确认率',
     orderSuccess:'订单接受率',
+    fetchTime: '抓取时间',
 }
 
 /**
  * tenant 租客
  * 只有租客个人基本信息，通过租客来寻找更多房东
+ * 这个静态字段是有波动的
  */
 var tenant = {
     id: '',

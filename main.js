@@ -6,12 +6,19 @@ const jobs = {
     addTenant(url){
         console.log('房客入列拉：'+url)
         db.Tenant.save(tenant)
+        console.log(tenant.dynamic)
+        
         // 将点评中不重复的房子放进队列
     },
     addLandlord(url){
         console.log('房东入列拉：'+landlord)
         landlord.solve(url).then(data=>{
             //将房源信息的房子的收集行动放进队列
+            db.Landlord.save(data)
+            console.log('房东的房子入列了'+data.houses)            
+            data.houses.forEach(ele=>{
+                this.addHouse(ele.url)
+            })
         })
     },
     addHouse(url){

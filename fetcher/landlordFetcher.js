@@ -1,21 +1,66 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
-function fetch(data,url){
+function fetch(data,url,isNoPage){
     let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let landlord = {
         id: id.replace(/[^0-9]/g,""),
-        username: getName($),
-        img: getImg($),
-        auth: getAuth($),
-        info: getInfo($),
+        username: getName($,isNoPage),
+        img: getImg($,isNoPage),
+        auth: getAuth($,isNoPage),
+        info: getInfo($,isNoPage),
+        busInfo: getBusInfo($,isNoPage),
     }
     return landlord;
 }
-function getName($){
+function getBusInfo($,isNoPage){
+    let info = {}   
+    if(isNoPage){
+        $('.fd_infor ul li').each((index,element)=>{
+            let $element = $(element)        
+            if(index == 0){
+                info.houseAmount = utils.allTrim($element.find('span').text())
+            } else if(index == 1){
+                info.onlineReply = utils.allTrim($element.find('span').text())
+            } else if(index == 2){
+                info.reviewAmount = utils.allTrim($element.find('span').text())
+            } else if(index == 3){
+                info.onlineReply = utils.allTrim($element.find('span').text())
+            } else if(index == 4){
+                info.perConfirm = utils.allTrim($element.find('span').text())
+            } else if(index == 5){
+                info.orderAmount = utils.allTrim($element.find('span').text())
+            } else if(index == 6){
+                info.orderSuccess = utils.allTrim($element.find('span').text())
+            } 
+        })
+    } else {
+        $('infor_ul li').each((index,element)=>{
+            let $element = $(element)      
+            if(index == 0){
+                info.onlineReply = utils.allTrim($element.find('strong').text())                
+            } else if(index == 1){
+                info.perConfirm = utils.allTrim($element.find('strong').text())                                
+            } else if(index == 2){
+                info.orderSuccess = utils.allTrim($element.find('strong').text())                                
+            }
+        })
+        info.houseAmount = $('.nav_bg2').find('span').text()
+        info.reviewAmount = $('.nav_bg3').find('span').text()
+        info.orderAmount = $('.nav_bg4').find('span').text()
+    }
+    return info    
+}
+function getName($,isNoPage){
+    if(isNoPage){
+        return utils.allTrim($('.fd_infor').find('h1').text())
+    }
     return utils.allTrim($('.fd_name').text())
 }
-function getAuth($){
+function getAuth($,isNoPage){
+    if(isNoPage){
+        return ''
+    }
     let auth = {
         name: $('.rz_ul li').first().find('strong').text(),
         ava: $('.rz_ul li').first().next().find('strong').text(),
@@ -23,10 +68,16 @@ function getAuth($){
     }
     return auth;
 }
-function getImg($){
+function getImg($,isNoPage){
+    if(isNoPage){
+        return $('.fd_con img_con img').attr('src')
+    }
     return $('.fd_img img').attr('src')
 }
-function getInfo($){
+function getInfo($,isNoPage){
+    if(isNoPage){
+        return null
+    }
     let info = {}
     $('.fd_person li').each((index,element)=>{
         let $element = $(element)        
@@ -53,23 +104,6 @@ function getInfo($){
     return info;
 }
 
-function getScore($){
-    return $('.comment_box .x_textscore').text()
-    
-}
-function getSelfcomment($){
-    let comments = $('#selfcomment')
-    let res = [];
-    comments.find('.dp_box').each((i,ele)=>{
-        let $element = $(ele)
-        var evaluation = {
-            'tenant':utils.allTrim($element.find('a').text()),
-            'content':utils.allTrim($element.find('.dp_con').text()),// 没有去掉h6
-            'username':utils.allTrim($element.find('.dp_con h6 a').text()),            
-            'time':$element.find('.dp_con h6 i').text()
-        }
-        res.push(evaluation)
-    })
-    return res
-}
+
+
 module.exports = fetch

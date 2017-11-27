@@ -1,6 +1,7 @@
 const axios = require('axios');
 const config = require('../config')
 const fetcher = require('../fetcher/landlordFetcher')
+const fetcherFangzi = require('../fetcher/landlordFangzi')
 /**
  * 房东有4个连续的子页面
  * /yuding.html
@@ -18,28 +19,34 @@ function solve(url){
             let list = {};
             axios.get(url)
              .then(res=> {
-                 if(res.request.path.includes('no.html')){
-                    //list.local= fetcher(res.data,url)                     
-                    reslove()                
-                 }
-                 list.local= fetcher(res.data,url)
-                 console.log(list)
-                 return null       
-                 //return axios.get(url+'yuding.html')
-             }).then(res=>{
-                list.local= fetcher(res.data,url)                
-                return axios.get(url+'fangzi.html')
-             }).then(res=>{
-                list.local= fetcher(res.data,url)                
-                return axios.get(url+'pinglun.html')
-             }).then(res=>{
-                list.local= fetcher(res.data,url)                
+                let isNoPage = res.request.path.includes('no.html')
+                console.log('isNoPage:'+isNoPage)
+                let landlord = fetch(res.data,url,isNoPage)
+                if(!isNoPage){
+                    axios.get(url+'fangzi.html').then(fangziRes=>{
+                        landlord.houses = fetcherFangzi(fangziRes.data)
+                        resolve(landlord)                        
+                    })
+                } else {
+                    resolve(landlord)
+                }
+                
              }).catch(err=>{
                 reject(err)
              })
         },sleep)  
     })
 }
+
+// .then(res=>{
+//     list.local= fetcher(res.data,url)                
+//     return axios.get(url+'fangzi.html')
+//  }).then(res=>{
+//     list.local= fetcher(res.data,url)                
+//     return axios.get(url+'pinglun.html')
+//  }).then(res=>{
+//     list.local= fetcher(res.data,url)                
+//  })
 function unitTest(url){
     if(!url){
         //var url = 'http://www.xiaozhu.com/fangdong/4225205713/'        
