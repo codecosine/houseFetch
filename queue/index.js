@@ -1,18 +1,11 @@
 
 const config = require('../config.js')
-module.exports = function(){
-    // implement your job functions.
-  var myJobs = {
-    add: function(a, b, callback) { callback(a + b); },
-    succeed: function(arg, callback) { callback(); },
-    fail: function(arg, callback) { callback(new Error('fail')); }
-  }
-  
+module.exports = function(jobs){
   // setup a worker
   var worker = require('coffee-resque').connect({
     host: config.REDIS.host,
     port: config.REDIS.port
-  }).worker('*', myJobs)
+  }).worker('*', jobs)
   
   // some global event listeners
   //
@@ -25,19 +18,12 @@ module.exports = function(){
   // Triggered every time a Job errors.
   worker.on('error', function(err, worker, queue, job) {
     console.log('worker on error')
-    
   })
   
   // Triggered on every successful Job run.
   worker.on('success', function(worker, queue, job, result) {
       console.log('worker on success')
   })
-  
-  worker.start()
+  return worker
 
-  myJobs.add(6,2,(a)=>console.log(a))
-  myJobs.add(2,2,(a)=>console.log(a))
-  myJobs.succeed('success',()=>console.log('success'))
-  myJobs.add(8,2,(a)=>console.log(a))
-  myJobs.fail('fail',()=>new Error('fail exist'))
 }

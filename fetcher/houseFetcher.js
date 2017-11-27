@@ -10,9 +10,13 @@ function fetch(data,url){
         introduce: getIntro($),
         des: getDes($),
         score: getScore($),
+        landlord: getLandlord($),
         selfcomment: getSelfcomment($),
     }
     return house;
+}
+function getLandlord($){
+    return $('.lorder_name').attr('href')
 }
 function getInfo($){
     let info = $('.pho_info')
@@ -61,6 +65,7 @@ function getSelfcomment($){
         let $element = $(ele)
         var evaluation = {
             'tenant':utils.allTrim($element.find('a').text()),
+            'path':$element.find('a').attr('href'),
             'content':utils.allTrim($element.find('.dp_con').text()),// 没有去掉h6
             'username':utils.allTrim($element.find('.dp_con h6 a').text()),            
             'time':$element.find('.dp_con h6 i').text()

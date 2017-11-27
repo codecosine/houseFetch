@@ -8,7 +8,7 @@ const fetcher = require('../fetcher/houseFetcher')
 function solve(url){
     return new Promise(function(resolve,reject){
         var sleep = Math.random()* config.SLEEP_TIME_OUT
-        console.log('sleep:'+sleep)
+        console.log('随机sleep:'+sleep)
         setTimeout(function callback(){
             axios.get(url)
              .then(res=> {

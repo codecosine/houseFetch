@@ -1,5 +1,5 @@
 module.exports = {
-    SLEEP_TIME_OUT: 500,
+    SLEEP_TIME_OUT: 8000,
     DB: {
         name: 'cosine',
         host: '127.0.0.1',
