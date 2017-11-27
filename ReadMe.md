@@ -19,7 +19,6 @@ nodejs+axios+cheerio+mysql
 var house = {
     houseId: '房屋Id',// 由地址栏最后的数字,*主键
     landlordId: '',
-
     title: '标题',
     address: '房屋地点',
     info1: '面积户型',
