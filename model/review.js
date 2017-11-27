@@ -1,32 +1,28 @@
-var BaseModel = require('./base');
 var Sequelize = require('sequelize');
 
 module.exports = {
     id: {
         type: Sequelize.BIGINT,
         primaryKey: true,
-        defaultValue: BaseModel.uid()
     },
-    mail: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    passwd: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    name: {
+    houseId: {
         type: Sequelize.STRING,
         allowNull: true
     },
-    auth: {
+    tenantId: {
         type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: 'member',        
+        allowNull: true
     },
-    department: {
+    content: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    checkInTime: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: '未分配',
+    },
+    reply: {
+        type: Sequelize.STRING,
+        allowNull: true,
     }
 }
