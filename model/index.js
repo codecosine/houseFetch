@@ -1,7 +1,6 @@
 
 var Sequelize = require('sequelize');
 var config = require('../config');
-var userSchema = require('./user')
 
 // var sequelize = new Sequelize(
 //     config.db.name,
@@ -18,24 +17,28 @@ var userSchema = require('./user')
 
 var House = {
     //重复判断, 无论如何进行houseHy 表的更新
-    save(){
+    save(info){
         console.log('save')
+        //console.log(info)        
     }
 }
 var Tenant = {
-    save(){
-        console.log('save')
+    save(info){
+        console.log('saveTenant')
+        console.log(info)        
     }
 }
 var Review = {
-    save(){
-        console.log('save')
+    save(info){
+        console.log('saveReview')
+        console.log(info)        
     }
 }
 var Landlord = {
     //判断是否存在房东详情页),无论如何进行landlordHistory表的更新
-    save(){
-        console.log('save')
+    save(info){
+        console.log('saveLandlord')
+        console.log(info)
     }
 }
 module.exports = {

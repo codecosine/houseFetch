@@ -1,7 +1,6 @@
 const axios = require('axios');
 const config = require('../config')
-const fetcher = require('../fetcher/landlordFetcher')
-const fetcherFangzi = require('../fetcher/landlordFangzi')
+const fetcher = require('../fetcher/tenantFetcher')
 /**
  * 房东有4个连续的子页面
  * /yuding.html
@@ -11,15 +10,15 @@ const fetcherFangzi = require('../fetcher/landlordFangzi')
  * 单次请求限制,采用随机Sleep
  * 
  */
-function solve(url){
+function solve(url,landlord){
     return new Promise(function(resolve,reject){
-        var sleep = Math.random()* config.SLEEP_TIME_OUT
+        var sleep = Math.random()* config.SLEEP_TIME_OUT + 5000;
         console.log('sleep:'+sleep)
         setTimeout(function callback(){
             let list = {};
             axios.get(url)
              .then(res=> {
-                let tenant = fetch(res.data,url)
+                let tenant = fetcher(res.data,url,landlord)
                 resolve(tenant)
              }).catch(err=>{
                 reject(err)

@@ -70,7 +70,7 @@ function getAuth($,isNoPage){
 }
 function getImg($,isNoPage){
     if(isNoPage){
-        return $('.fd_con img_con img').attr('src')
+        return $('.fd_con .img_con img').attr('src')
     }
     return $('.fd_img img').attr('src')
 }

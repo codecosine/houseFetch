@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
-function fetch(data,url){
+function fetch(data,url,originUrl){
     let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let tenant = {
@@ -9,16 +9,21 @@ function fetch(data,url){
         img: getImg($),
         auth: getAuth($),
         info: getInfo($),
-        dynamic: getDynamic($)
+        dynamic: getDynamic($,originUrl)
     }
     return tenant;
 }
-function getDynamic($){
+function getDynamic($,originUrl){
     var list = [];
-    $('.fk_trend_con fk_trend_T').each((index,element)=>{
+    // todo 这里找的时候要直接划开进来的
+    $('.fk_trend_wrapper .fk_trend_con .fk_trend_T').each((index,element)=>{
         let $element = $(element)
-        var url = $element.find('a').attr('href')
-        list.push(url)
+        if($element.text().includes('入住')){
+            var url = $element.find('a').attr('href')
+            if(url!= originUrl){
+                list.push(url)
+            }
+        } 
     });
     return [...new Set(list)]
 }

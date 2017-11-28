@@ -13,7 +13,7 @@ const fetcherFangzi = require('../fetcher/landlordFangzi')
  */
 function solve(url){
     return new Promise(function(resolve,reject){
-        var sleep = Math.random()* config.SLEEP_TIME_OUT
+        var sleep = Math.random()* config.SLEEP_TIME_OUT + 5000;
         console.log('sleep:'+sleep)
         setTimeout(function callback(){
             let list = {};
@@ -21,7 +21,7 @@ function solve(url){
              .then(res=> {
                 let isNoPage = res.request.path.includes('no.html')
                 console.log('isNoPage:'+isNoPage)
-                let landlord = fetch(res.data,url,isNoPage)
+                let landlord = fetcher(res.data,url,isNoPage)
                 if(!isNoPage){
                     axios.get(url+'fangzi.html').then(fangziRes=>{
                         landlord.houses = fetcherFangzi(fangziRes.data)

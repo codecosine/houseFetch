@@ -1,2 +1,2 @@
-var test = require('../api/landlord')
+var test = require('../api/tenant')
 test.unitTest();
