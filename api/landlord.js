@@ -20,7 +20,6 @@ function solve(url){
             axios.get(url)
              .then(res=> {
                 let isNoPage = res.request.path.includes('no.html')
-                console.log('isNoPage:'+isNoPage)
                 let landlord = fetcher(res.data,url,isNoPage)
                 if(!isNoPage){
                     axios.get(url+'fangzi.html').then(fangziRes=>{

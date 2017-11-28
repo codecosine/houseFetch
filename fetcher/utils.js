@@ -4,6 +4,10 @@ function allTrim(str){
     str = str.replace(/^[\s　]+|[\s　]+$/g, "");//去掉全角半角空格
     return str
 }
+function getUrlId(str){
+    return str.replace(/[^0-9]+/g,"")
+}
 module.exports={
     allTrim,
+    getUrlId,
 }

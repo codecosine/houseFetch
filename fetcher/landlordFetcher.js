@@ -4,7 +4,7 @@ function fetch(data,url,isNoPage){
     let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let landlord = {
-        id: id.replace(/[^0-9]/g,""),
+        id: id.replace(/[^0-9]+/g,""),
         username: getName($,isNoPage),
         img: getImg($,isNoPage),
         auth: getAuth($,isNoPage),

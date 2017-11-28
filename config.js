@@ -1,7 +1,7 @@
 module.exports = {
-    SLEEP_TIME_OUT: 8000,
+    SLEEP_TIME_OUT: 15000,
     DB: {
-        name: 'cosine',
+        name: 'xiaozhuSpider',
         host: '127.0.0.1',
         user: 'root',
         passwd: 'cosine',
