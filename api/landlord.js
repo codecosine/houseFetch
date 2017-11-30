@@ -1,4 +1,5 @@
 const axios = require('axios');
+const superAgent = require('superagent');
 const config = require('../config')
 const fetcher = require('../fetcher/landlordFetcher')
 const fetcherFangzi = require('../fetcher/landlordFangzi')
@@ -8,16 +9,20 @@ const fetcherFangzi = require('../fetcher/landlordFangzi')
  * /pinglun.html
  * /fangzi.html
  * /no.html
- * 单次请求限制,采用随机Sleep
  * 
  */
 function solve(url){
     return new Promise(function(resolve,reject){
         let list = {};
-        axios.get(url)
-            .then(res=> {
-            let isNoPage = res.request.path.includes('no.html')
-            let landlord = fetcher(res.data,url,isNoPage)
+        superAgent.get(url).set({
+            Referer: url,
+            'User-Agent': config.UA
+        }).end((err,response)=> {
+            if (err) {
+                reject(err)
+            }
+            let isNoPage = response.request.path.includes('no.html')
+            let landlord = fetcher(response.text,url,isNoPage)
             if(!isNoPage){
                 axios.get(url+'fangzi.html').then(fangziRes=>{
                     landlord.houses = fetcherFangzi(fangziRes.data)
@@ -26,25 +31,12 @@ function solve(url){
             } else {
                 resolve(landlord)
             }
-            
-            }).catch(err=>{
-            reject(err)
-            })
+        })
     })
 }
 
-// .then(res=>{
-//     list.local= fetcher(res.data,url)                
-//     return axios.get(url+'fangzi.html')
-//  }).then(res=>{
-//     list.local= fetcher(res.data,url)                
-//     return axios.get(url+'pinglun.html')
-//  }).then(res=>{
-//     list.local= fetcher(res.data,url)                
-//  })
 function unitTest(url){
     if(!url){
-        //var url = 'http://www.xiaozhu.com/fangdong/4225205713/'        
         var url = 'http://www.xiaozhu.com/fangdong/110426400/';
     }
     solve(url).then(data=>{

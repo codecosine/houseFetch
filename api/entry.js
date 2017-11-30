@@ -7,7 +7,6 @@ function solve(url){
             .end(function(err,sres){
                 var entrys = []        
                 if(err){
-                    //throw err;
                     reject(err);
                 }
                 var $ = cheerio.load(sres.text);
