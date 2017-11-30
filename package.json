@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "async": "^2.6.0",
     "axios": "^0.17.1",
     "cheerio": "^1.0.0-rc.2",
-    "coffee-resque": "^0.1.11",
+    "level": "^2.0.1",
+    "level-jobs": "^2.0.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.1",
     "node-schedule": "^1.2.5",

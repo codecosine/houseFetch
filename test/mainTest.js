@@ -21,10 +21,10 @@ const options = {
 
 function worker(id, payload, cb) {
     var sleep = Math.random()*config.SLEEP_TIME_OUT + 8000;
-    console.log('Spider processing :'+ payload.name + 'evnet %s'+ id +',sleep:'+sleep)
+    console.log('Spider processing event %s:'+ payload.name + ',sleep:'+sleep)
     setTimeout(()=>{Spider[payload.name](payload,(err)=>{
         if (err) {
-            console.error('Error processing'+ payload.name +' event %s: %s',id, err.message);
+            console.error('Error processing event %s: %s',id, err.message);
         }
         cb(err);
     })},sleep)
@@ -46,7 +46,7 @@ const Spider = {
             cb(err)
         })
     },
-    addLandlord({url},cb){
+    addLandlord(url,cb){
         landlord.solve(url).then(data=>{
             //将房源信息的房子的收集行动放进队列
             db.Landlord.save(data)
@@ -92,7 +92,6 @@ const Spider = {
     },
 }
 const queue = Jobs(evnetDb, worker, options);
-module.exports = queue
 queue.push({
     name:'addHouse',
     url:'http://su.xiaozhu.com/fangzi/22932799503.html',

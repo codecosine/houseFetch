@@ -12,9 +12,6 @@ const fetcher = require('../fetcher/tenantFetcher')
  */
 function solve(url,landlord){
     return new Promise(function(resolve,reject){
-        var sleep = Math.random()* config.SLEEP_TIME_OUT + 5000;
-        console.log('sleep:'+sleep)
-        setTimeout(function callback(){
             let list = {};
             axios.get(url)
              .then(res=> {
@@ -23,7 +20,6 @@ function solve(url,landlord){
              }).catch(err=>{
                 reject(err)
              })
-        },sleep)  
     })
 }
 

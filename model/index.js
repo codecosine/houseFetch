@@ -18,8 +18,8 @@ var config = require('../config');
 var House = {
     //重复判断, 无论如何进行houseHy 表的更新
     save(info){
-        console.log('save')
-        //console.log(info)        
+        console.log('database save event')        
+        console.log(info)        
     }
 }
 var Tenant = {

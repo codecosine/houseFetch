@@ -1,5 +1,7 @@
 module.exports = {
     SLEEP_TIME_OUT: 15000,
+    MAX_CONCURRENCY: 3,
+    MAX_RETRIES: 1,
     DB: {
         name: 'xiaozhuSpider',
         host: '127.0.0.1',
