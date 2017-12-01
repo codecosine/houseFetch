@@ -69,9 +69,7 @@ const Spider = {
             // 数据库表更新
             db.House.save(data)         
             db.Review.save(data.selfcomment)
-            // 房东信息入列
-            //this.addLandlord(data.landlord)
-            
+            // 房东信息入列            
             cb()
             queue.push({
                 name: 'addLandlord',

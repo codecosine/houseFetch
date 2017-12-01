@@ -1,2 +1,7 @@
 var test = require('../api/house')
-test.unitTest();
+const db = require('../model')
+
+test.unitTest().then(data=>{
+    console.log(data)
+    db.House.save(data)             
+})

@@ -5,6 +5,7 @@
     "cheerio": "^1.0.0-rc.2",
     "level": "^2.0.1",
     "level-jobs": "^2.0.0",
+    "moment": "^2.19.3",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.1",
     "node-schedule": "^1.2.5",

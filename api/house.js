@@ -20,9 +20,7 @@ function unitTest(url){
     if(!url){
         var url = 'http://gz.xiaozhu.com/fangzi/12976912902.html';
     }
-    solve(url).then(data=>{
-        console.log(data)
-    })
+    return solve(url)
 }
 module.exports = {
     solve,    

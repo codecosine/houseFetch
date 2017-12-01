@@ -5,10 +5,10 @@ module.exports = {
     UA:'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0',
     DB: {
         name: 'xiaozhuSpider',
-        host: '127.0.0.1',
+        host: '202.116.148.193',
         user: 'root',
-        passwd: 'cosine',
-        port: 3307
+        passwd: '123456',
+        port: 3306
     },
     REDIS: {
         host: '127.0.0.1',

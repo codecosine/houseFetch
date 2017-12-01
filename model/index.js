@@ -1,25 +1,70 @@
 
 var Sequelize = require('sequelize');
 var config = require('../config');
+var moment = require('moment');
 
-// var sequelize = new Sequelize(
-//     config.db.name,
-//     config.db.user,
-//     config.db.passwd,
-//     {
-//         'dialect': 'mysql',
-//         'host': config.db.host,
-//         'port': config.db.port
-//     }
-// );
+var uuidUtils = {
+    inc: moment().valueOf(),
+    // id生成
+    uid: function() {
+        var new_id = 0;
+        // 毫秒时间戳
+        new_id += moment().valueOf();
+        // 自增
+        this.inc += 1;
+        new_id += this.inc;
+        return new_id;
+    },
+};
 
-//var User = sequelize.define('user', userSchema);
+
+var sequelize = new Sequelize(
+    config.DB.name,
+    config.DB.user,
+    config.DB.passwd,
+    {
+        'dialect': 'mysql',
+        'host': config.DB.host,
+        'port': config.DB.port
+    }
+);
+
+var HouseSchema = sequelize.define('house', require('./house')); 
+var HouseHySchema = sequelize.define('houseHy', require('./houseHy')); 
+var landlordSchema = sequelize.define('landlord', require('./landlord')); 
+var landlordHySchema = sequelize.define('landlordHy', require('./landlordHy')); 
+var reviewSchema = sequelize.define('review', require('./review')); 
+var reviewSchtenantSchemaema = sequelize.define('tenant', require('./tenant')); 
 
 var House = {
     //重复判断, 无论如何进行houseHy 表的更新
-    save(info){
-        console.log('database save event')        
-        console.log(info)        
+    save(data){
+        console.log('****DATABASE_EVENT:SAVE-House****')        
+        HouseHySchema.create({
+            id:uuidUtils.uid(),
+            houseId:data.id,
+            price:data.price,
+            scoreAll:data.score,
+        })
+        HouseSchema.findOne({
+            where:{
+                id:data.id
+            }
+        }).then(res=>{
+            if(!res){
+                HouseSchema.create({
+                    id:data.id,
+                    landlordId:data.landlord,
+                    title:data.info.title,
+                    address:data.info.address,
+                    info1:data.des,
+                    info2:data.introduce,
+                })
+            } else {
+                console.log('****ALERT***HOUSE_EXIST')                        
+            }
+
+        })
     }
 }
 var Tenant = {
