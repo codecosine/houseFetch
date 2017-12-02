@@ -2,6 +2,7 @@ const axios = require('axios');
 const superAgent = require('superagent');
 const config = require('../config')
 const fetcher = require('../fetcher/houseFetcher')
+const reviewsFetcher = require('../fetcher/reviewsFetcher')
 function solve(url){
     return new Promise(function(resolve,reject){
         superAgent.get(url).set({
@@ -11,7 +12,13 @@ function solve(url){
             if (err) {
                 reject(err)
             }
-            resolve(fetcher(response.text,url))                          
+            let house = fetcher(response.text,url)
+            reviewsFetcher(house.id).then(reviews=>{
+                house.reviews = reviews
+                resolve(house)                                          
+            }).catch(err=>{
+                resolve(house)
+            })
         })
           
     })

@@ -1,33 +1,42 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
 function fetch(data,url){
-    let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let house = {
-        id: id.replace(/[^0-9]/g,""),
+        id: utils.getUrlId(url),
         info: getInfo($),
         price: getPrice($),
         introduce: getIntro($),
         des: getDes($),
         score: getScore($),
         landlord: getLandlord($),
-        selfcomment: getSelfcomment($),
+        reviews: [],
     }
     return house;
 }
 function getLandlord($){
-    return $('.lorder_name').attr('href')
+    return {
+        id:utils.getUrlId($('.lorder_name').attr('href')),
+        username:$('.lorder_name').text(),
+        url:$('.lorder_name').attr('href'),
+        sex:$('.member_pic').hasClass('member_ico1')?'female':'male'
+    }
 }
 function getInfo($){
     let info = $('.pho_info')
     let title = info.find('h4 em').text()
     let address = info.find('p').attr('title')
+    let labels = ''
+    info.find('.labels span').each((i,ele)=>{
+        let $element = $(ele)
+        labels += utils.delHtmlText($element.text()+",")
+    })
     return {
         title,
-        address
+        address,
+        labels
     }
 }
-
 function getPrice($){
     return $('#pricePart .day_l').find('span').text()
 }
@@ -46,32 +55,35 @@ function getIntro($){
 }
 function getDes($){
     let des = $('.detail_intro_item')
-    let res = ''
+    let res = {
+        info1: '个性描述',
+        info2: '内部情况',
+        info3: '交通情况',
+        info4: '周边情况',
+        info5: '配套设施',
+        info6: '入住须知',
+    }
     des.each(function(i,elem){
         let $element = $(elem)
-        res += utils.allTrim($element.find('.info_l p').text()+':')
-        res += utils.allTrim($element.find('.info_r p').text()+',')
+        var title = utils.allTrim($element.find('.info_l p').text())
+        // 骚操作，直接遍历比对然后替换
+        Object.keys(res).forEach(key=>{
+            if(res[key] == title){
+                res[key] = utils.allTrim($element.find('.info_r p').text())
+            }
+        })
     })
     return res
 }
 function getScore($){
-    return $('.comment_box .x_textscore').text()
-    
-}
-function getSelfcomment($){
-    let comments = $('#selfcomment')
-    let res = [];
-    comments.find('.dp_box').each((i,ele)=>{
-        let $element = $(ele)
-        var evaluation = {
-            'tenant':utils.allTrim($element.find('a').text()),
-            'path':$element.find('a').attr('href'),
-            'content':utils.allTrim($element.find('.dp_con').text()),// 没有去掉h6
-            'username':utils.allTrim($element.find('.dp_con h6 a').text()),            
-            'time':$element.find('.dp_con h6 i').text()
-        }
-        res.push(evaluation)
+    let details = '';
+    $('.score_r li').each(function(i,elem){
+        let $element = $(elem)        
+        details += $element.text()+','
     })
-    return res
+    return {
+        score:$('.comment_box .x_textscore').text() || '暂无评分统计',
+        details,
+    }
 }
 module.exports = fetch

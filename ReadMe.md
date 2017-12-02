@@ -17,19 +17,17 @@ nodejs+axios+cheerio+mysql
  * house
  */
 var house = {
-    houseId: '房屋Id',// 由地址栏最后的数字,*主键
+    houseId: '房屋Id',
     landlordId: '',
     title: '标题',
     address: '房屋地点',
-    info1: '面积户型',
-    info2: '宜居人数',
-    info3: '家具情况',
-    info4: '个性描述',
-    info5: '内部情况',
-    info6: '交通情况',
-    info7: '周边情况',
-    info8: '配套设施',
-    info9: '入住须知',
+    des:'房屋设施描述',
+    info1: '个性描述',
+    info2: '内部情况',
+    info3: '交通情况',
+    info4: '周边情况',
+    info5: '配套设施',
+    info6: '入住须知',
 }
 var houseHistory = {
     id: '标志',
