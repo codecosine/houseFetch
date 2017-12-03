@@ -22,7 +22,7 @@ function solve(url){
                 reject(err)
             }
             //console.log(response.request.req.path.includes('no.html'))
-            let isNoPage = response.request.req.path.includes('no.html')
+            let isNoPage = response.request.req.path.includes('no.html') || false
             let landlord = fetcher(response.text,url,isNoPage)
             if(!isNoPage){
                 axios.get(url+'fangzi.html').then(fangziRes=>{

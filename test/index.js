@@ -8,10 +8,10 @@ var axios = require('axios')
 //     console.error(err)
 // })
 
-house.unitTest('http://gz.xiaozhu.com/fangzi/3829974130.html').then(data=>{
-    console.log(data)
-    //db.House.save(data)             
-})
+// house.unitTest('http://gz.xiaozhu.com/fangzi/3829974130.html').then(data=>{
+//     console.log(data)
+//     //db.House.save(data)             
+// })
 // const url = 'http://gz.xiaozhu.com/ajax.php'
 // axios.get(url,{
 //     params: {
@@ -26,13 +26,13 @@ house.unitTest('http://gz.xiaozhu.com/fangzi/3829974130.html').then(data=>{
 
 
 
-// var test = require('../api/landlord')
-// test.unitTest('http://www.xiaozhu.com/fangdong/110426400/').then(data=>{
-//     console.log(data)
-//     //db.House.save(data)             
-// })
-// test.unitTest('http://www.xiaozhu.com/fangdong/12070894101/').then(data=>{
-//     console.log(data)
-//     //db.House.save(data)             
-// })
+var landlord = require('../api/landlord')
+landlord.unitTest('http://www.xiaozhu.com/fangdong/110426400/').then(data=>{
+    console.log(data)
+    //db.House.save(data)             
+})
+landlord.unitTest('http://www.xiaozhu.com/fangdong/12070894101/').then(data=>{
+    console.log(data)
+    //db.House.save(data)             
+})
 

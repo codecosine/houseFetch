@@ -1,6 +1,6 @@
 module.exports = {
     SLEEP_TIME_OUT: 15000,
-    MAX_CONCURRENCY: 3,
+    MAX_CONCURRENCY: 5,
     MAX_RETRIES: 1,
     UA(){
         function getRandomInt(min, max) {

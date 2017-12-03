@@ -11,7 +11,7 @@ const db = require('../model')
 
 const options = {
     maxConcurrency: config.MAX_CONCURRENCY,
-    // maxRetries: config.MAX_RETRIES,
+    maxRetries: config.MAX_RETRIES,
     // backoff: {
     //   randomisationFactor: 0,
     //   initialDelay: 10,

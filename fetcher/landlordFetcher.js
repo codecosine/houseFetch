@@ -71,7 +71,7 @@ function getName($,isNoPage){
 }
 function getAuth($,isNoPage){
     if(isNoPage){
-        return null
+        return ''
     }
     let auth = {
         name: $('.rz_ul li').first().find('strong').text(),
@@ -87,9 +87,7 @@ function getImg($,isNoPage){
     return $('.fd_img img').attr('src')
 }
 function getInfo($,isNoPage){
-    if(isNoPage){
-        return null
-    }
+    
     let info = {
         sex: '',
         age: '',
@@ -101,28 +99,30 @@ function getInfo($,isNoPage){
         education:'',
         position:'',
     }
-    $('.fd_person li').each((index,element)=>{
-        let $element = $(element)        
-        if(index == 0){
-            info.sex = utils.allTrim($element.text())
-        } else if(index == 1){
-            info.age = utils.allTrim($element.text())
-        } else if(index == 2){
-            info.constellation = utils.allTrim($element.text())
-        } else if(index == 3){
-            info.zodiac = utils.allTrim($element.text())
-        } else if(index == 4){
-            info.home = utils.allTrim($element.text())
-        } else if(index == 5){
-            info.bloodType = utils.allTrim($element.text())
-        } else if(index == 6){
-            info.job = utils.allTrim($element.text())
-        } else if(index == 7){
-            info.position = utils.allTrim($element.text())
-        } else if(index == 8){
-            info.education = utils.allTrim($element.text())
-        }
-    })
+    if(!isNoPage){
+        $('.fd_person li').each((index,element)=>{
+            let $element = $(element)        
+            if(index == 0){
+                info.sex = utils.allTrim($element.text())
+            } else if(index == 1){
+                info.age = utils.allTrim($element.text())
+            } else if(index == 2){
+                info.constellation = utils.allTrim($element.text())
+            } else if(index == 3){
+                info.zodiac = utils.allTrim($element.text())
+            } else if(index == 4){
+                info.home = utils.allTrim($element.text())
+            } else if(index == 5){
+                info.bloodType = utils.allTrim($element.text())
+            } else if(index == 6){
+                info.job = utils.allTrim($element.text())
+            } else if(index == 7){
+                info.position = utils.allTrim($element.text())
+            } else if(index == 8){
+                info.education = utils.allTrim($element.text())
+            }
+        })
+    }
     return info;
 }
 
