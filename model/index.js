@@ -107,6 +107,8 @@ var Review = {
                 houseId:data.id,
                 tenantId:element.tenantId,
                 content:element.content,
+                reply:element.reply,
+                checkInTime:element.time   
             })
         });
         

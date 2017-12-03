@@ -1,16 +1,17 @@
 var tenant = require('../api/tenant')
+var house = require('../api/house')
 var axios = require('axios')
-// const db = require('../model')
-tenant.unitTest().then(data=>{
-    console.log(data)
-}).catch(err=>{
-    console.error(err)
-})
-//*** house */
-// test.unitTest('http://gz.xiaozhu.com/fangzi/6502682415.html').then(data=>{
+// // const db = require('../model')
+// tenant.unitTest().then(data=>{
 //     console.log(data)
-//     //db.House.save(data)             
+// }).catch(err=>{
+//     console.error(err)
 // })
+
+house.unitTest('http://gz.xiaozhu.com/fangzi/3829974130.html').then(data=>{
+    console.log(data)
+    //db.House.save(data)             
+})
 // const url = 'http://gz.xiaozhu.com/ajax.php'
 // axios.get(url,{
 //     params: {

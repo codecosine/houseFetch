@@ -1,7 +1,7 @@
 const entrys = require('./api/entry');
 const queue = require('./queue')
 // 入口方式1：从地区主页寻找房子=》
-const entryUrl = 'http://sh.xiaozhu.com/';
+const entryUrl = 'http://bj.xiaozhu.com/';
 entrys.solve(entryUrl).then(houses=>{
     console.log(houses);
     // 将入口的所有房子推进队列顶部

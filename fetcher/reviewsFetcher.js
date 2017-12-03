@@ -18,7 +18,10 @@ function getReviews(id){
                 let $element = $(ele)
                 var evaluation = {
                     'tenantId':utils.getUrlId($element.find('a').attr('href')),
-                    'content':utils.allTrim($element.find('.dp_con').text()),// 没有去掉h6
+                    'content':utils.allTrim($element.find('.dp_con').contents().filter(function () {
+                        return this.nodeType == 3;
+                    }).text()),
+                    'reply':utils.allTrim($element.find('.dp_con .reply_box p').text()),
                     'username':utils.allTrim($element.find('.dp_con h6 a').text()),            
                     'time':$element.find('.dp_con h6 i').text()
                 }

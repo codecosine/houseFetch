@@ -90,7 +90,17 @@ function getInfo($,isNoPage){
     if(isNoPage){
         return null
     }
-    let info = {}
+    let info = {
+        sex: '',
+        age: '',
+        constellation:'',
+        zodiac:'',
+        home:'',
+        bloodType:'',
+        job:'',
+        education:'',
+        position:'',
+    }
     $('.fd_person li').each((index,element)=>{
         let $element = $(element)        
         if(index == 0){
