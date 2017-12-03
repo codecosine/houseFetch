@@ -1,10 +1,9 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
 function fetch(data,url,originUrl){
-    let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let tenant = {
-        id: id.replace(/[^0-9]/g,""),
+        id: utils.getUrlId(url),
         username: getName($),
         img: getImg($),
         auth: getAuth($),
@@ -34,7 +33,7 @@ function getAuth($){
     let auth = {
         phone: $('.fk_yz_ul li').first().find('strong').text(),
     }
-    return auth;
+    return utils.objectStringify(auth);
 }
 function getImg($){
     return $('.fk_img img').attr('src')

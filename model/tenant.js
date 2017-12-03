@@ -13,17 +13,18 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
     },
-    authName: {
+    age: {
         type: Sequelize.STRING,
         allowNull: true
     },
-    authPhone: {
+    avatar:{
         type: Sequelize.STRING,
         allowNull: true
     },
-    authAvatar: {
+    authInfo: {
         type: Sequelize.STRING,
         allowNull: true
     },
+
     
 }

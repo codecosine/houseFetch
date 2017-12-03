@@ -33,7 +33,6 @@ const Spider = {
     addTenant({url,landlord},cb){
         tenant.solve(url,landlord).then(data=>{
             db.Tenant.save(data)     
-            console.log(data.dynamic)
             // 将点评中不重复的房东放进队列
             data.dynamic.forEach(ele=>{
                 queue.push({
@@ -46,9 +45,15 @@ const Spider = {
             cb(err)
         })
     },
-    addLandlord({url},cb){
+    addLandlord({url,username,sex},cb){
         landlord.solve(url).then(data=>{
             //将房源信息的房子的收集行动放进队列
+            // 如果没有拿到，在这里拿
+            if(!data.info.sex && sex){
+                data.info.sex = sex
+            } else if(!data.username && username){
+                data.username = username
+            }
             db.Landlord.save(data)
             if(data.houses && data.houses.length > 0){
                 console.log("Landlord's houses push in queue:"+ data.houses)            
@@ -68,7 +73,7 @@ const Spider = {
         house.solve(url).then(data=>{
             // 数据库表更新
             db.House.save(data)         
-            db.Review.save(data.reviews)
+            db.Review.save(data)
             cb()
             queue.push({
                 name: 'addLandlord',
@@ -80,8 +85,8 @@ const Spider = {
             data.reviews.forEach(element => {
                 queue.push({
                     name:'addTenant',
-                    url:element.path,
-                    landlord: data.landlord// 房客入列的时候知道是哪个房东带进来的
+                    url:'http://www.xiaozhu.com/fangke/'+element.tenantId +'/',
+                    landlord: data.landlord.id// 房客入列的时候知道是哪个房东带进来的
                 })
             });
            
@@ -92,7 +97,3 @@ const Spider = {
 }
 const queue = Jobs(evnetDb, worker, options);
 module.exports = queue
-queue.push({
-    name:'addHouse',
-    url:'http://su.xiaozhu.com/fangzi/22932799503.html',
-})

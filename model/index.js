@@ -34,7 +34,7 @@ var HouseHySchema = sequelize.define('houseHy', require('./houseHy'));
 var landlordSchema = sequelize.define('landlord', require('./landlord')); 
 var landlordHySchema = sequelize.define('landlordHy', require('./landlordHy')); 
 var reviewSchema = sequelize.define('review', require('./review')); 
-var reviewSchtenantSchemaema = sequelize.define('tenant', require('./tenant')); 
+var tenantSchema = sequelize.define('tenant', require('./tenant')); 
 
 var House = {
     //重复判断, 无论如何进行houseHy 表的更新
@@ -76,15 +76,40 @@ var House = {
     }
 }
 var Tenant = {
-    save(info){
-        console.log('saveTenant')
-        console.log(info)        
+    save(data){
+        tenantSchema.findOne({
+            where:{
+                id:data.id
+            }
+        }).then(res=>{
+            if(!res){
+                tenantSchema.create({
+                    id:data.id,
+                    username:data.username,
+                    registerTime:data.info.registerTime,
+                    age:data.info.age,
+                    avatar:data.img,
+                    authInfo:data.authInfo, 
+                })
+            } else {
+                console.log('****ALERT***tenant**EXIST')                        
+            }
+
+        })
+        
     }
 }
 var Review = {
-    save(info){
-        console.log('saveReview')
-        console.log(info)        
+    save(data){
+        data.reviews.forEach(element => {
+            reviewSchema.create({
+                id:uuidUtils.uid(),
+                houseId:data.id,
+                tenantId:element.tenantId,
+                content:element.content,
+            })
+        });
+        
     }
 }
 var Landlord = {

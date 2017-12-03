@@ -3,7 +3,7 @@ const superAgent = require('superagent');
 const config = require('../config')
 const fetcher = require('../fetcher/tenantFetcher')
 
-function solve(url,landlord){
+function solve(url,originUrl){
     return new Promise(function(resolve,reject){
         superAgent.get(url).set({
             Referer: url,
@@ -12,7 +12,7 @@ function solve(url,landlord){
             if (err) {
                 reject(err)
             }
-            let tenant = fetcher(res.data,url,landlord)
+            let tenant = fetcher(res.text,url,originUrl)
             resolve(tenant)
         })
     })
@@ -22,9 +22,7 @@ function unitTest(url){
     if(!url){
         var url = 'http://www.xiaozhu.com/fangke/24108555801/';
     }
-    solve(url).then(data=>{
-        console.log(data)
-    })
+    return solve(url,'')
 }
 module.exports = {
     solve,    
