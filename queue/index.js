@@ -68,15 +68,16 @@ const Spider = {
         house.solve(url).then(data=>{
             // 数据库表更新
             db.House.save(data)         
-            db.Review.save(data.selfcomment)
-            // 房东信息入列            
+            db.Review.save(data.reviews)
             cb()
             queue.push({
                 name: 'addLandlord',
-                url: data.landlord
+                url: data.landlord.url,
+                sex: data.landlord.sex,
+                username: data.landlord.username,
             })
             // 房客信息入列
-            data.selfcomment.forEach(element => {
+            data.reviews.forEach(element => {
                 queue.push({
                     name:'addTenant',
                     url:element.path,

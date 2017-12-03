@@ -1,17 +1,31 @@
 const cheerio = require('cheerio');
 const utils = require('./utils')
 function fetch(data,url,isNoPage){
-    let id = url.substring(url.lastIndexOf("/")+1);
     let $ = cheerio.load(data);
     let landlord = {
-        id: id.replace(/[^0-9]+/g,""),
+        id: utils.getUrlId(url),
         username: getName($,isNoPage),
         img: getImg($,isNoPage),
         auth: getAuth($,isNoPage),
         info: getInfo($,isNoPage),
         busInfo: getBusInfo($,isNoPage),
+        houses: getHouses($,isNoPage)
     }
     return landlord;
+}
+function getHouses($,isNoPage){
+    let houses = []
+    if(isNoPage){ // 有房主首页则异步ajax后面再获取
+        $('.fd_room dd').each((index,element)=>{
+            let $element = $(element)  
+            let item = {
+                url:$element.find('.room_link a').attr('href'),
+                title:$element.find('.room_link a').attr('title')
+            }
+            houses.push(item)        
+        });
+    }
+    return houses;
 }
 function getBusInfo($,isNoPage){
     let info = {}   
@@ -59,7 +73,7 @@ function getName($,isNoPage){
 }
 function getAuth($,isNoPage){
     if(isNoPage){
-        return ''
+        return null
     }
     let auth = {
         name: $('.rz_ul li').first().find('strong').text(),

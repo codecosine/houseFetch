@@ -21,7 +21,8 @@ function solve(url){
             if (err) {
                 reject(err)
             }
-            let isNoPage = response.request.path.includes('no.html')
+            //console.log(response.request.req.path.includes('no.html'))
+            let isNoPage = response.request.req.path.includes('no.html')
             let landlord = fetcher(response.text,url,isNoPage)
             if(!isNoPage){
                 axios.get(url+'fangzi.html').then(fangziRes=>{
@@ -39,9 +40,7 @@ function unitTest(url){
     if(!url){
         var url = 'http://www.xiaozhu.com/fangdong/110426400/';
     }
-    solve(url).then(data=>{
-        console.log(data)
-    })
+    return solve(url)
 }
 module.exports = {
     solve,    
