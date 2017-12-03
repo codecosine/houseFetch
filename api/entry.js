@@ -1,9 +1,13 @@
 const cheerio = require('cheerio');
 const request = require('superagent');
+const config = require('../config')
 
 function solve(url){
     return new Promise(function(resolve,reject){
-        request.get(url)
+        request.get(url).set({
+                Referer: url,
+                'User-Agent': config.UA()
+            })
             .end(function(err,sres){
                 var entrys = []        
                 if(err){

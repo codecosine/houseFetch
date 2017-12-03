@@ -16,7 +16,7 @@ function solve(url){
         let list = {};
         superAgent.get(url).set({
             Referer: url,
-            'User-Agent': config.UA
+            'User-Agent': config.UA()
         }).end((err,response)=> {
             if (err) {
                 reject(err)

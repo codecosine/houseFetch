@@ -7,7 +7,7 @@ function solve(url,originUrl){
     return new Promise(function(resolve,reject){
         superAgent.get(url).set({
             Referer: url,
-            'User-Agent': config.UA
+            'User-Agent': config.UA()
         }).end((err,res)=> {
             if (err) {
                 reject(err)
