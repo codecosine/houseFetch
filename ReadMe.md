@@ -4,6 +4,7 @@
 - nodejs 
 - axios/superagent
 - cheerio
+- leveldb
 - sequelize
 - mysql
 
