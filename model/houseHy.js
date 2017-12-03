@@ -17,23 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
     },
-    score1: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    score2: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    score3: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    score4: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    score5: {
+    scoreDetails: {
         type: Sequelize.STRING,
         allowNull: true
     },

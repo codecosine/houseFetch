@@ -17,6 +17,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
     },
+    labels: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    introduce: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
     info1: {
         type: Sequelize.STRING,
         allowNull: true
@@ -41,18 +49,4 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
     },
-    info7: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    info8: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    info9: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    
-    
 }

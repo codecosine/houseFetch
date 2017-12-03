@@ -44,7 +44,8 @@ var House = {
             id:uuidUtils.uid(),
             houseId:data.id,
             price:data.price,
-            scoreAll:data.score,
+            scoreAll:data.score.score,
+            scoreDetails:data.score.details,
         })
         HouseSchema.findOne({
             where:{
@@ -54,10 +55,17 @@ var House = {
             if(!res){
                 HouseSchema.create({
                     id:data.id,
-                    landlordId:data.landlord,
+                    landlordId:data.landlord.id,
                     title:data.info.title,
                     address:data.info.address,
-                    info1:data.des,
+                    labels:data.info.labels,
+                    introduce:data.introduce,
+                    info1:data.des.info1,
+                    info2:data.des.info2,
+                    info3:data.des.info3,
+                    info4:data.des.info4,
+                    info5:data.des.info5,
+                    info6:data.des.info6,
                     info2:data.introduce,
                 })
             } else {
