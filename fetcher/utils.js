@@ -21,9 +21,18 @@ function delHtmlText(str){
     str = str.replace(/^[\s　]+|[\s　]+$/g, "");//去掉全角半角空格
     return str
 }
+function objectStringify(obj){
+    var str = '';
+    Object.keys(obj).forEach(key=>{
+        str+= key + ':'
+        str+= obj[key]+','
+    })
+    return str;
+}
 module.exports={
     allTrim,
     getUrlId,
     delHtmlTag,
     delHtmlText,
+    objectStringify,
 }

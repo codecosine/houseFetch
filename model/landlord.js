@@ -13,19 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
     },
-    authName: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    authPhone: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    authAvatar: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    authZima: {
+    authInfo: {
         type: Sequelize.STRING,
         allowNull: true
     },

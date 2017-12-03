@@ -39,17 +39,15 @@ function getBusInfo($,isNoPage){
             } else if(index == 2){
                 info.reviewAmount = utils.allTrim($element.find('span').text())
             } else if(index == 3){
-                info.onlineReply = utils.allTrim($element.find('span').text())
-            } else if(index == 4){
                 info.perConfirm = utils.allTrim($element.find('span').text())
-            } else if(index == 5){
+            } else if(index == 4){
                 info.orderAmount = utils.allTrim($element.find('span').text())
-            } else if(index == 6){
+            } else if(index == 5){
                 info.orderSuccess = utils.allTrim($element.find('span').text())
-            } 
+            }
         })
     } else {
-        $('infor_ul li').each((index,element)=>{
+        $('.infor_ul li').each((index,element)=>{
             let $element = $(element)      
             if(index == 0){
                 info.onlineReply = utils.allTrim($element.find('strong').text())                
@@ -80,7 +78,7 @@ function getAuth($,isNoPage){
         ava: $('.rz_ul li').first().next().find('strong').text(),
         zima: $('.rz_ul li').find('.ico_zhima i').text() || false
     }
-    return auth;
+    return utils.objectStringify(auth);
 }
 function getImg($,isNoPage){
     if(isNoPage){

@@ -50,8 +50,8 @@ const Spider = {
         landlord.solve(url).then(data=>{
             //将房源信息的房子的收集行动放进队列
             db.Landlord.save(data)
-            if(data.houses){
-                console.log('房东的房子入列了'+data.houses)            
+            if(data.houses && data.houses.length > 0){
+                console.log("Landlord's houses push in queue:"+ data.houses)            
                 data.houses.forEach(ele=>{
                     queue.push({
                         name: 'addHouse',

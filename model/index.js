@@ -89,9 +89,43 @@ var Review = {
 }
 var Landlord = {
     //判断是否存在房东详情页),无论如何进行landlordHistory表的更新
-    save(info){
-        console.log('saveLandlord')
-        console.log(info)
+    save(data){
+        console.log('****DATABASE_EVENT:SAVE-Landlord****')          
+        landlordHySchema.create({
+            id:uuidUtils.uid(),
+            landlordId:data.id,
+            houseAmount:data.busInfo.houseAmount,
+            reviewAmount:data.busInfo.reviewAmount,
+            orderAmount:data.busInfo.orderAmount,
+            onlineReply:data.busInfo.onlineReply,
+            perConfirm:data.busInfo.perConfirm,
+            orderSuccess:data.busInfo.orderSuccess,
+        })      
+        landlordSchema.findOne({
+            where:{
+                id:data.id
+            }
+        }).then(res=>{
+            if(!res){
+                landlordSchema.create({
+                    id:data.id,
+                    username:data.username,
+                    avatar:data.img,
+                    authInfo:data.auth,
+                    sex:data.info.sex,
+                    age:data.info.age,
+                    constellation: data.info.constellation,
+                    zodiac: data.info.zodiac,
+                    home:data.info.home,
+                    bloodType:data.info.bloodType,
+                    job:data.info.job,
+                    education: data.info.education,
+                })
+            } else {
+                console.log('****ALERT***Landlord_EXIST')                        
+            }
+
+        })
     }
 }
 module.exports = {
